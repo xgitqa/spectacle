@@ -14,21 +14,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Carthage
-        run: brew install carthage
-
-      - name: Cache Carthage
+      - name: Cache Sparkle framework
+        id: cache-sparkle
         uses: actions/cache@v4
         with:
-          path: Carthage/Build
-          key: ${{ runner.os }}-carthage-${{ hashFiles('Cartfile.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-carthage-
+          path: Carthage/Build/Mac/Sparkle.framework
+          key: sparkle-2.6.4-mac-framework
 
-      - name: Bootstrap Carthage
-        env:
-          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: carthage bootstrap --platform Mac Sparkle
+      - name: Download Sparkle framework
+        if: steps.cache-sparkle.outputs.cache-hit != 'true'
+        run: |
+          curl -L \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -o /tmp/Sparkle.tar.xz \
+            "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
+          mkdir -p /tmp/sparkle-extract
+          tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" -path "*/macos*" | head -1)
+          echo "Found framework at: $SPARKLE_FW"
+          mkdir -p Carthage/Build/Mac
+          cp -r "$SPARKLE_FW" Carthage/Build/Mac/
 
       - name: Build
         run: |
@@ -47,6 +52,6 @@ jobs:
       - name: Verify arm64 slice
         run: |
           BINARY="$RUNNER_TEMP/build/Release/Spectacle.app/Contents/MacOS/Spectacle"
-          echo "Checking: $BINARY"
+          echo "Binary info:"
           lipo -info "$BINARY"
-          lipo -info "$BINARY" | grep -q arm64 && echo "arm64 slice present" || (echo "arm64 slice missing" && exit 1)
+          lipo -info "$BINARY" | grep -q arm64 && echo "arm64 slice present" || (echo "arm64 slice MISSING" && exit 1)
