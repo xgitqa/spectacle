@@ -1,0 +1,54 @@
+name: Build
+
+on:
+  push:
+    branches: [ master, 'claude/**' ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build (Apple Silicon)
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Carthage
+        run: brew install carthage
+
+      - name: Cache Carthage
+        uses: actions/cache@v4
+        with:
+          path: Carthage/Build
+          key: ${{ runner.os }}-carthage-${{ hashFiles('Cartfile.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-carthage-
+
+      - name: Bootstrap Carthage
+        run: carthage bootstrap --platform Mac --use-xcframeworks
+
+      - name: Build
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Spectacle.xcodeproj \
+            -scheme Spectacle \
+            -configuration Release \
+            -destination 'platform=macOS,arch=arm64' \
+            build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcpretty
+
+      - name: Verify Universal Binary
+        run: |
+          APP=$(find ~/Library/Developer/Xcode/DerivedData -name "Spectacle.app" -path "*/Release/*" | head -1)
+          if [ -z "$APP" ]; then
+            APP=$(find build -name "Spectacle.app" | head -1)
+          fi
+          BINARY="$APP/Contents/MacOS/Spectacle"
+          echo "Checking: $BINARY"
+          lipo -info "$BINARY"
+          lipo -info "$BINARY" | grep -q arm64 && echo "✓ arm64 slice present" || (echo "✗ arm64 slice missing" && exit 1)
