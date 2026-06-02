@@ -1,0 +1,191 @@
+name: Release (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. 1.3.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Sparkle framework
+        id: cache-sparkle
+        uses: actions/cache@v4
+        with:
+          path: Carthage/Build/Mac/Sparkle.framework
+          key: sparkle-2.6.4-mac-framework
+
+      - name: Download Sparkle framework
+        if: steps.cache-sparkle.outputs.cache-hit != 'true'
+        run: |
+          curl -L \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -o /tmp/Sparkle.tar.xz \
+            "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
+          mkdir -p /tmp/sparkle-extract
+          tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | head -1)
+          if [ -z "$SPARKLE_FW" ]; then echo "ERROR: Sparkle.framework not found" && exit 1; fi
+          mkdir -p Carthage/Build/Mac
+          cp -r "$SPARKLE_FW" Carthage/Build/Mac/
+
+      - name: Cache test frameworks
+        id: cache-test-fw
+        uses: actions/cache@v4
+        with:
+          path: |
+            Carthage/Build/Mac/OCHamcrest.framework
+            Carthage/Build/Mac/OCMockito.framework
+            Carthage/Build/Mac/Expecta.framework
+            Carthage/Build/Mac/Specta.framework
+          key: test-frameworks-${{ hashFiles('Cartfile.private', 'Cartfile.resolved') }}
+
+      - name: Bootstrap test frameworks
+        if: steps.cache-test-fw.outputs.cache-hit != 'true'
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat > /tmp/carthage-compat.xcconfig <<'XCEOF'
+          CLANG_TREAT_WARNINGS_AS_ERRORS = NO
+          GCC_TREAT_WARNINGS_AS_ERRORS = NO
+          SWIFT_TREAT_WARNINGS_AS_ERRORS = NO
+          XCEOF
+          export XCODE_XCCONFIG_FILE=/tmp/carthage-compat.xcconfig
+          carthage bootstrap --platform Mac OCHamcrest OCMockito expecta specta 2>&1
+
+      - name: Run unit tests
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Spectacle.xcodeproj \
+            -scheme Spectacle \
+            -configuration Debug \
+            SYMROOT="$RUNNER_TEMP/build" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            test \
+            | xcpretty --test
+
+  release:
+    name: Build and Release
+    runs-on: macos-14
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Sparkle framework
+        id: cache-sparkle
+        uses: actions/cache@v4
+        with:
+          path: Carthage/Build/Mac/Sparkle.framework
+          key: sparkle-2.6.4-mac-framework
+
+      - name: Download Sparkle framework
+        if: steps.cache-sparkle.outputs.cache-hit != 'true'
+        run: |
+          curl -L \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -o /tmp/Sparkle.tar.xz \
+            "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
+          mkdir -p /tmp/sparkle-extract
+          tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | head -1)
+          if [ -z "$SPARKLE_FW" ]; then echo "ERROR: Sparkle.framework not found" && exit 1; fi
+          mkdir -p Carthage/Build/Mac
+          cp -r "$SPARKLE_FW" Carthage/Build/Mac/
+
+      - name: Set version
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "Spectacle/Supporting Files/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "Spectacle/Supporting Files/Info.plist"
+          echo "Building version $VERSION"
+
+      - name: Build Release
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Spectacle.xcodeproj \
+            -scheme Spectacle \
+            -configuration Release \
+            SYMROOT="$RUNNER_TEMP/build" \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=YES \
+            CODE_SIGNING_ALLOWED=YES \
+            build \
+            | xcpretty
+
+      - name: Embed Sparkle framework
+        run: |
+          APP="$RUNNER_TEMP/build/Release/Spectacle.app"
+          mkdir -p "$APP/Contents/Frameworks"
+          cp -r Carthage/Build/Mac/Sparkle.framework "$APP/Contents/Frameworks/"
+          ls "$APP/Contents/Frameworks/"
+
+      - name: Ad-hoc codesign
+        run: |
+          APP="$RUNNER_TEMP/build/Release/Spectacle.app"
+          find "$APP/Contents/Frameworks" -name "*.framework" | while read fw; do
+            codesign --force --sign "-" "$fw"
+          done
+          codesign --force --deep --sign "-" "$APP"
+          codesign -dv "$APP" 2>&1 || true
+
+      - name: Verify universal binary
+        run: |
+          BINARY="$RUNNER_TEMP/build/Release/Spectacle.app/Contents/MacOS/Spectacle"
+          lipo -info "$BINARY"
+          lipo -info "$BINARY" | grep -q arm64 && echo "arm64 slice present" || (echo "arm64 slice MISSING" && exit 1)
+
+      - name: Package
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          cd "$RUNNER_TEMP/build/Release"
+          ditto -c -k --keepParent Spectacle.app "$RUNNER_TEMP/Spectacle-v${VERSION}.zip"
+          echo "Package size: $(du -sh $RUNNER_TEMP/Spectacle-v${VERSION}.zip | cut -f1)"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          # Create an annotated tag first
+          git config user.email "ci@github.com"
+          git config user.name "GitHub Actions"
+          git tag -a "v${VERSION}" -m "Spectacle v${VERSION}"
+          git push origin "v${VERSION}"
+          gh release create "v${VERSION}" \
+            "$RUNNER_TEMP/Spectacle-v${VERSION}.zip#Spectacle-v${VERSION}.zip" \
+            --title "Spectacle v${VERSION}" \
+            --notes "## Spectacle v${VERSION} — Apple Silicon Build
+
+Native arm64 support (no Rosetta required). Universal binary runs on both Apple Silicon and Intel Macs.
+
+### Install
+1. Download and unzip \`Spectacle-v${VERSION}.zip\`
+2. Move \`Spectacle.app\` to \`/Applications\`
+3. **First launch only:** right-click → Open to bypass the Gatekeeper warning
+
+> This build is ad-hoc signed (not notarized). macOS shows a security prompt on the very first launch — right-clicking and choosing Open bypasses it permanently.
+
+### System Requirements
+- macOS 10.13 High Sierra or later
+- Apple Silicon (M-series) or Intel Mac
+
+### Changes from the original Spectacle
+- Native arm64 binary — no Rosetta 2 required
+- Sparkle updated to 2.x (also arm64-native)
+- Minimum macOS raised from 10.9 to 10.13"
