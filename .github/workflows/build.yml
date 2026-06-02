@@ -57,11 +57,7 @@ jobs:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Disable warnings-as-errors so older ObjC frameworks build on Xcode 15
-          cat > /tmp/carthage-compat.xcconfig <<'XCEOF'
-          CLANG_TREAT_WARNINGS_AS_ERRORS = NO
-          GCC_TREAT_WARNINGS_AS_ERRORS = NO
-          SWIFT_TREAT_WARNINGS_AS_ERRORS = NO
-          XCEOF
+          printf 'CLANG_TREAT_WARNINGS_AS_ERRORS = NO\nGCC_TREAT_WARNINGS_AS_ERRORS = NO\nSWIFT_TREAT_WARNINGS_AS_ERRORS = NO\n' > /tmp/carthage-compat.xcconfig
           export XCODE_XCCONFIG_FILE=/tmp/carthage-compat.xcconfig
           carthage bootstrap --platform Mac OCHamcrest OCMockito expecta specta 2>&1
 
