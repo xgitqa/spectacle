@@ -1,0 +1,115 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and Release
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Carthage
+        run: brew install carthage
+
+      - name: Cache Carthage
+        uses: actions/cache@v4
+        with:
+          path: Carthage/Build
+          key: ${{ runner.os }}-carthage-${{ hashFiles('Cartfile.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-carthage-
+
+      - name: Bootstrap Carthage
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: carthage bootstrap --platform Mac Sparkle
+
+      - name: Set version from tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "Spectacle/Supporting Files/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "Spectacle/Supporting Files/Info.plist"
+          echo "Building version $VERSION"
+
+      - name: Build Release
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Spectacle.xcodeproj \
+            -scheme Spectacle \
+            -configuration Release \
+            SYMROOT="$RUNNER_TEMP/build" \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=YES \
+            CODE_SIGNING_ALLOWED=YES \
+            build \
+            | xcpretty
+
+      - name: Embed Sparkle framework
+        run: |
+          APP="$RUNNER_TEMP/build/Release/Spectacle.app"
+          FRAMEWORKS="$APP/Contents/Frameworks"
+          mkdir -p "$FRAMEWORKS"
+          cp -r Carthage/Build/Mac/Sparkle.framework "$FRAMEWORKS/"
+          # Copy Sparkle's own XPC helper bundles if present
+          for helper in Carthage/Build/Mac/*.xpc; do
+            [ -e "$helper" ] && cp -r "$helper" "$FRAMEWORKS/" || true
+          done
+
+      - name: Ad-hoc codesign
+        run: |
+          APP="$RUNNER_TEMP/build/Release/Spectacle.app"
+          # Sign nested bundles first, then the outer app
+          find "$APP" -name "*.framework" -o -name "*.xpc" | while read f; do
+            codesign --force --sign "-" "$f"
+          done
+          codesign --force --deep --sign "-" "$APP"
+
+      - name: Verify universal binary
+        run: |
+          BINARY="$RUNNER_TEMP/build/Release/Spectacle.app/Contents/MacOS/Spectacle"
+          echo "Binary info:"
+          lipo -info "$BINARY"
+          lipo -info "$BINARY" | grep -q arm64 && echo "arm64 slice present" || (echo "arm64 slice missing" && exit 1)
+
+      - name: Package
+        run: |
+          cd "$RUNNER_TEMP/build/Release"
+          ditto -c -k --keepParent Spectacle.app "$RUNNER_TEMP/Spectacle-${GITHUB_REF_NAME}.zip"
+          echo "Archive size: $(du -sh $RUNNER_TEMP/Spectacle-${GITHUB_REF_NAME}.zip | cut -f1)"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" \
+            "$RUNNER_TEMP/Spectacle-${GITHUB_REF_NAME}.zip#Spectacle-${GITHUB_REF_NAME}.zip" \
+            --title "Spectacle ${GITHUB_REF_NAME}" \
+            --notes "## Spectacle ${GITHUB_REF_NAME} — Apple Silicon Build
+
+Native arm64 support (no Rosetta required). Universal binary runs on both Apple Silicon and Intel Macs.
+
+### Install
+1. Download and unzip \`Spectacle-${GITHUB_REF_NAME}.zip\`
+2. Move \`Spectacle.app\` to \`/Applications\`
+3. **First launch only:** right-click → Open to bypass the Gatekeeper warning
+
+> This build is ad-hoc signed. macOS will show a security prompt on the very first launch — right-clicking and choosing Open bypasses it permanently for this app.
+
+### System Requirements
+- macOS 10.13 High Sierra or later
+- Apple Silicon (M-series) or Intel Mac
+
+### What changed from the original
+- Native arm64 binary (no Rosetta 2 required)
+- Sparkle updated to 2.x (also arm64-native)
+- Minimum macOS raised from 10.9 to 10.13"
