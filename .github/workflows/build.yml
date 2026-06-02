@@ -21,12 +21,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: Carthage/Build
-          key: ${{ runner.os }}-carthage-${{ hashFiles('Cartfile.resolved') }}
+          key: ${{ runner.os }}-carthage-sparkle-${{ hashFiles('Cartfile.resolved') }}
           restore-keys: |
-            ${{ runner.os }}-carthage-
+            ${{ runner.os }}-carthage-sparkle-
 
-      - name: Bootstrap Carthage
-        run: carthage bootstrap --platform Mac --use-xcframeworks
+      - name: Bootstrap Carthage (Sparkle only)
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: carthage bootstrap --platform Mac --use-xcframeworks Sparkle
 
       - name: Build
         run: |
@@ -42,13 +44,10 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             | xcpretty
 
-      - name: Verify Universal Binary
+      - name: Verify arm64 slice
         run: |
           APP=$(find ~/Library/Developer/Xcode/DerivedData -name "Spectacle.app" -path "*/Release/*" | head -1)
-          if [ -z "$APP" ]; then
-            APP=$(find build -name "Spectacle.app" | head -1)
-          fi
           BINARY="$APP/Contents/MacOS/Spectacle"
           echo "Checking: $BINARY"
           lipo -info "$BINARY"
-          lipo -info "$BINARY" | grep -q arm64 && echo "✓ arm64 slice present" || (echo "✗ arm64 slice missing" && exit 1)
+          lipo -info "$BINARY" | grep -q arm64 && echo "arm64 slice present" || (echo "arm64 slice missing" && exit 1)
