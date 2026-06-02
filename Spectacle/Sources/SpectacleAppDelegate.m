@@ -27,6 +27,7 @@
   NSSet<NSString *> *_blacklistedApplications;
   NSMutableSet<NSString *> *_disabledApplications;
   BOOL _shortcutsAreDisabledForAnHour;
+  SPUStandardUpdaterController *_updaterController;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
@@ -113,7 +114,11 @@
   if (statusItemEnabled) {
     [self enableStatusItem];
   }
-  [[SUUpdater sharedUpdater] setAutomaticallyChecksForUpdates:automaticallyChecksForUpdates];
+  _updaterController = [[SPUStandardUpdaterController alloc] initWithStartingUpdater:NO
+                                                                    updaterDelegate:nil
+                                                                 userDriverDelegate:nil];
+  _updaterController.updater.automaticallyChecksForUpdates = automaticallyChecksForUpdates;
+  [_updaterController.updater startUpdater:nil];
   [self updateShortcutMenuItems];
   if (!AXIsProcessTrustedWithOptions(NULL)) {
     [[NSApplication sharedApplication] runModalForWindow:self.accessiblityAccessDialogWindow];
@@ -339,11 +344,9 @@
 - (void)enableShortcutsIfPermitted
 {
   NSRunningApplication *frontmostApplication = [NSWorkspace sharedWorkspace].frontmostApplication;
-  // Do not enable shortcuts if they should remain disabled for an hour.
   if (_shortcutsAreDisabledForAnHour) {
     return;
   }
-  // Do not enable shortcuts if the application is blacklisted or disabled.
   if ([_blacklistedApplications containsObject:frontmostApplication.bundleIdentifier]
       || [_disabledApplications containsObject:frontmostApplication.bundleIdentifier]) {
     return;
@@ -355,7 +358,6 @@
 - (void)disableShortcutsIfFrontmostApplicationIsBlacklistedOrDisabled
 {
   NSRunningApplication *frontmostApplication = [NSWorkspace sharedWorkspace].frontmostApplication;
-  // Do not disable shortcuts if the application is not blacklisted or disabled.
   if (![_blacklistedApplications containsObject:frontmostApplication.bundleIdentifier]
       && ![_disabledApplications containsObject:frontmostApplication.bundleIdentifier]) {
     return;
