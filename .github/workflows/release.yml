@@ -32,8 +32,13 @@ jobs:
             "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
           mkdir -p /tmp/sparkle-extract
           tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
-          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" -path "*/macos*" | head -1)
+          find /tmp/sparkle-extract -maxdepth 3 -type d | head -20
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | head -1)
           echo "Found framework at: $SPARKLE_FW"
+          if [ -z "$SPARKLE_FW" ]; then
+            echo "ERROR: Sparkle.framework not found in extracted archive"
+            exit 1
+          fi
           mkdir -p Carthage/Build/Mac
           cp -r "$SPARKLE_FW" Carthage/Build/Mac/
 
