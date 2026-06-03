@@ -111,7 +111,7 @@ jobs:
           set -o pipefail
           xcodebuild \
             -project Spectacle.xcodeproj \
-            -scheme Spectacle \
+            -target Spectacle \
             -configuration Release \
             SYMROOT="$RUNNER_TEMP/build" \
             CODE_SIGN_IDENTITY="-" \
