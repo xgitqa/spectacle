@@ -49,16 +49,14 @@ jobs:
             Carthage/Build/Mac/OCMockito.framework
             Carthage/Build/Mac/Expecta.framework
             Carthage/Build/Mac/Specta.framework
-          key: test-frameworks-${{ hashFiles('Cartfile.private', 'Cartfile.resolved') }}
+          key: test-frameworks-${{ hashFiles('Cartfile.private', 'Cartfile.resolved', 'Carthage.xcconfig') }}
 
       - name: Bootstrap test frameworks
         if: steps.cache-test-fw.outputs.cache-hit != 'true'
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Disable warnings-as-errors so older ObjC frameworks build on Xcode 15
-          printf 'CLANG_TREAT_WARNINGS_AS_ERRORS = NO\nGCC_TREAT_WARNINGS_AS_ERRORS = NO\nSWIFT_TREAT_WARNINGS_AS_ERRORS = NO\n' > /tmp/carthage-compat.xcconfig
-          export XCODE_XCCONFIG_FILE=/tmp/carthage-compat.xcconfig
+          export XCODE_XCCONFIG_FILE="$GITHUB_WORKSPACE/Carthage.xcconfig"
           carthage bootstrap --platform Mac OCHamcrest OCMockito expecta specta 2>&1
 
       - name: Run tests
