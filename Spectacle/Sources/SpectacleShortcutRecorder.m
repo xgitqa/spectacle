@@ -12,10 +12,10 @@ static const NSTrackingAreaOptions kTrackingAreaOptions = (NSTrackingMouseEntere
                                                            | NSTrackingActiveWhenFirstResponder
                                                            | NSTrackingEnabledDuringMouseDrag);
 
-static const NSEventModifierFlags kCocoaModifierFlagsMask = (NSControlKeyMask
-                                                             | NSAlternateKeyMask
-                                                             | NSShiftKeyMask
-                                                             | NSCommandKeyMask);
+static const NSEventModifierFlags kCocoaModifierFlagsMask = (NSEventModifierFlagControl
+                                                             | NSEventModifierFlagOption
+                                                             | NSEventModifierFlagShift
+                                                             | NSEventModifierFlagCommand);
 
 @implementation SpectacleShortcutRecorder
 {
@@ -332,7 +332,7 @@ static NSMutableDictionary<NSString *, id> *stringAttributesWithShadow(void)
   NSShadow *textShadow = [NSShadow new];
   NSMutableDictionary<NSString *, id> *stringAttributes = [NSMutableDictionary new];
   paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-  paragraphStyle.alignment = NSCenterTextAlignment;
+  paragraphStyle.alignment = NSTextAlignmentCenter;
   textShadow.shadowColor = [NSColor whiteColor];
   textShadow.shadowOffset = NSMakeSize(0.0f, -1.0);
   textShadow.shadowBlurRadius = 0.0f;

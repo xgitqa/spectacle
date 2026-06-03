@@ -1,9 +1,9 @@
-name: Release
+name: Release (Manual)
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - 'release/**'
 
 permissions:
   contents: write
@@ -100,9 +100,9 @@ jobs:
           mkdir -p Carthage/Build/Mac
           cp -rP "$SPARKLE_FW" Carthage/Build/Mac/
 
-      - name: Set version from tag
+      - name: Set version
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${GITHUB_REF_NAME#release/v}"
           /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "Spectacle/Supporting Files/Info.plist"
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "Spectacle/Supporting Files/Info.plist"
           echo "Building version $VERSION"
@@ -144,18 +144,22 @@ jobs:
 
       - name: Package
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
+          VERSION="${GITHUB_REF_NAME#release/v}"
           cd "$RUNNER_TEMP/build/Release"
-          ditto -c -k --keepParent Spectacle.app "$RUNNER_TEMP/Spectacle-${GITHUB_REF_NAME}.zip"
-          echo "Package: $(du -sh $RUNNER_TEMP/Spectacle-${GITHUB_REF_NAME}.zip | cut -f1)"
+          ditto -c -k --keepParent Spectacle.app "$RUNNER_TEMP/Spectacle-v${VERSION}.zip"
+          echo "Package: $(du -sh $RUNNER_TEMP/Spectacle-v${VERSION}.zip | cut -f1)"
 
-      - name: Create GitHub Release
+      - name: Create tag and GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          NOTES=$(printf '## Spectacle %s - Apple Silicon Build\n\nNative arm64 support (no Rosetta required). Universal binary runs on both Apple Silicon and Intel Macs.\n\n### Install\n1. Download and unzip Spectacle-%s.zip\n2. Move Spectacle.app to /Applications\n3. First launch only: right-click and choose Open\n\nThis build is ad-hoc signed (not notarized). macOS shows a security prompt on first launch.\n\n### System Requirements\n- macOS 10.13 High Sierra or later\n- Apple Silicon (M-series) or Intel Mac\n\n### Changes from the original Spectacle\n- Native arm64 binary - no Rosetta 2 required\n- Sparkle updated to 2.x (also arm64-native)\n- Minimum macOS raised from 10.9 to 10.13' "$GITHUB_REF_NAME" "$GITHUB_REF_NAME")
-          gh release create "$GITHUB_REF_NAME" \
-            "$RUNNER_TEMP/Spectacle-${GITHUB_REF_NAME}.zip#Spectacle-${GITHUB_REF_NAME}.zip" \
-            --title "Spectacle ${GITHUB_REF_NAME}" \
+          VERSION="${GITHUB_REF_NAME#release/v}"
+          git config user.email "ci@github.com"
+          git config user.name "GitHub Actions"
+          git tag -a "v${VERSION}" -m "Spectacle v${VERSION}"
+          git push origin "v${VERSION}"
+          NOTES=$(printf '## Spectacle v%s - Apple Silicon Build\n\nNative arm64 support (no Rosetta required). Universal binary runs on both Apple Silicon and Intel Macs.\n\n### Install\n1. Download and unzip Spectacle-v%s.zip\n2. Move Spectacle.app to /Applications\n3. First launch only: right-click and choose Open\n\nThis build is ad-hoc signed (not notarized). macOS shows a security prompt on first launch.\n\n### System Requirements\n- macOS 10.13 High Sierra or later\n- Apple Silicon (M-series) or Intel Mac\n\n### Changes from the original Spectacle\n- Native arm64 binary - no Rosetta 2 required\n- Sparkle updated to 2.x (also arm64-native)\n- Minimum macOS raised from 10.9 to 10.13' "$VERSION" "$VERSION")
+          gh release create "v${VERSION}" \
+            "$RUNNER_TEMP/Spectacle-v${VERSION}.zip#Spectacle-v${VERSION}.zip" \
+            --title "Spectacle v${VERSION}" \
             --notes "$NOTES"

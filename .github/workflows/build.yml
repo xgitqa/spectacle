@@ -7,6 +7,80 @@ on:
     branches: [ master ]
 
 jobs:
+  test:
+    name: Unit Tests
+    runs-on: macos-14
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Sparkle framework
+        id: cache-sparkle
+        uses: actions/cache@v4
+        with:
+          path: Carthage/Build/Mac/Sparkle.framework
+          key: sparkle-2.6.4-mac-framework
+
+      - name: Download Sparkle framework
+        if: steps.cache-sparkle.outputs.cache-hit != 'true'
+        run: |
+          curl -L \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -o /tmp/Sparkle.tar.xz \
+            "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
+          mkdir -p /tmp/sparkle-extract
+          tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
+          echo "Archive contents:"
+          find /tmp/sparkle-extract -maxdepth 5 -name "Sparkle.framework" | head -10
+          # Pick the framework inside xcframework (not inside .app bundles)
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | grep -v "\.app/" | head -1)
+          echo "Using framework at: $SPARKLE_FW"
+          if [ -z "$SPARKLE_FW" ]; then
+            echo "ERROR: Sparkle.framework not found (outside .app bundles)"
+            exit 1
+          fi
+          mkdir -p Carthage/Build/Mac
+          cp -rP "$SPARKLE_FW" Carthage/Build/Mac/
+
+      - name: Cache test frameworks
+        id: cache-test-fw
+        uses: actions/cache@v4
+        with:
+          path: |
+            Carthage/Build/Mac/OCHamcrest.framework
+            Carthage/Build/Mac/OCMockito.framework
+            Carthage/Build/Mac/Expecta.framework
+            Carthage/Build/Mac/Specta.framework
+          key: test-frameworks-${{ hashFiles('Cartfile.private', 'Cartfile.resolved', 'Carthage.xcconfig') }}
+
+      - name: Bootstrap test frameworks
+        if: steps.cache-test-fw.outputs.cache-hit != 'true'
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          export XCODE_XCCONFIG_FILE="$GITHUB_WORKSPACE/Carthage.xcconfig"
+          carthage bootstrap --platform Mac OCHamcrest OCMockito expecta specta 2>&1 || {
+            echo "=== Carthage xcodebuild log ==="
+            find /var/folders -name "carthage-xcodebuild*.log" 2>/dev/null | head -1 | xargs cat 2>/dev/null | tail -100
+            exit 1
+          }
+
+      - name: Run tests
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Spectacle.xcodeproj \
+            -scheme Spectacle \
+            -configuration Debug \
+            SYMROOT="$RUNNER_TEMP/build" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
+            CLANG_TREAT_WARNINGS_AS_ERRORS=NO \
+            test \
+            | xcpretty --test
+
   build:
     name: Build (Apple Silicon)
     runs-on: macos-14
@@ -30,15 +104,17 @@ jobs:
             "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
           mkdir -p /tmp/sparkle-extract
           tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
-          find /tmp/sparkle-extract -maxdepth 3 -type d | head -20
-          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | head -1)
-          echo "Found framework at: $SPARKLE_FW"
+          echo "Archive contents:"
+          find /tmp/sparkle-extract -maxdepth 5 -name "Sparkle.framework" | head -10
+          # Pick the framework inside xcframework (not inside .app bundles)
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | grep -v "\.app/" | head -1)
+          echo "Using framework at: $SPARKLE_FW"
           if [ -z "$SPARKLE_FW" ]; then
-            echo "ERROR: Sparkle.framework not found in extracted archive"
+            echo "ERROR: Sparkle.framework not found (outside .app bundles)"
             exit 1
           fi
           mkdir -p Carthage/Build/Mac
-          cp -r "$SPARKLE_FW" Carthage/Build/Mac/
+          cp -rP "$SPARKLE_FW" Carthage/Build/Mac/
 
       - name: Build
         run: |
@@ -51,6 +127,8 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
+            CLANG_TREAT_WARNINGS_AS_ERRORS=NO \
             build \
             | xcpretty
 
