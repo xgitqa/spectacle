@@ -1,20 +1,27 @@
-# Spectacle
-
-[![Build Status](https://travis-ci.org/eczarny/spectacle.svg?branch=master)](https://travis-ci.org/eczarny/spectacle)
+# Spectacle — Apple Silicon Fork
 
 Easily organize windows without using a mouse.
 
-## Important Note
+## Apple Silicon Support
 
-**This project is not being actively maintained.** Unfortunately, after almost a decade of on-and-off development I can no longer dedicate the time needed to be a responsible maintainer of this project. Spectacle will remain available for download but please use at your own risk. The source code will continue to be free and open to anyone, so feel free to make Spectacle your own.
+**This is an unofficial fork of Spectacle with native Apple Silicon (arm64) support.**
 
-Thanks to all the folks that have made Spectacle the first app they install a new Mac!
+The [original Spectacle project](https://github.com/eczarny/spectacle) is unmaintained and its last released binary is x86-only. Running x86 binaries on Apple Silicon Macs requires Rosetta 2 — and [Apple is removing Rosetta 2 in a future macOS update](https://support.apple.com/en-us/102527). This fork provides a native arm64 build that runs without Rosetta on M-series Macs, and also runs natively on Intel Macs as a universal binary.
 
-_Spectacle users have recommended [Rectangle](https://github.com/rxhanson/Rectangle) as an open source alternative._
+**[⬇ Download the latest release](https://github.com/xgitqa/spectacle/releases/latest)**
 
-## System requirements
+> **First launch:** macOS will show a security warning because the app is ad-hoc signed but not notarized. Right-click the app and choose **Open** — you only need to do this once.
 
-Spectacle [0.8.6][1] is the last version to support Mac OS X 10.7; future releases will only support 10.9 or greater. Folks wishing to stay on 10.7 should download [0.8.6][1]. Those looking for a version of Spectacle that supports 10.6 can still download [0.7][2].
+## System Requirements
+
+- macOS 10.13 High Sierra or later
+- Apple Silicon (M-series) or Intel Mac
+
+## Original Project Note
+
+**The upstream project is not being actively maintained.** The original author wrote: _"after almost a decade of on-and-off development I can no longer dedicate the time needed to be a responsible maintainer of this project."_
+
+_Spectacle users have also recommended [Rectangle](https://github.com/rxhanson/Rectangle) as a maintained open source alternative._
 
 ## Keyboard Shortcuts
 
