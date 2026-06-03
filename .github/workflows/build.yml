@@ -30,15 +30,17 @@ jobs:
             "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
           mkdir -p /tmp/sparkle-extract
           tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
-          find /tmp/sparkle-extract -maxdepth 3 -type d | head -20
-          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | head -1)
-          echo "Found framework at: $SPARKLE_FW"
+          echo "Archive contents:"
+          find /tmp/sparkle-extract -maxdepth 5 -name "Sparkle.framework" | head -10
+          # Pick the framework inside xcframework (not inside .app bundles)
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | grep -v "\.app/" | head -1)
+          echo "Using framework at: $SPARKLE_FW"
           if [ -z "$SPARKLE_FW" ]; then
-            echo "ERROR: Sparkle.framework not found in extracted archive"
+            echo "ERROR: Sparkle.framework not found (outside .app bundles)"
             exit 1
           fi
           mkdir -p Carthage/Build/Mac
-          cp -r "$SPARKLE_FW" Carthage/Build/Mac/
+          cp -rP "$SPARKLE_FW" Carthage/Build/Mac/
 
       - name: Cache test frameworks
         id: cache-test-fw
@@ -102,15 +104,17 @@ jobs:
             "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
           mkdir -p /tmp/sparkle-extract
           tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
-          find /tmp/sparkle-extract -maxdepth 3 -type d | head -20
-          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | head -1)
-          echo "Found framework at: $SPARKLE_FW"
+          echo "Archive contents:"
+          find /tmp/sparkle-extract -maxdepth 5 -name "Sparkle.framework" | head -10
+          # Pick the framework inside xcframework (not inside .app bundles)
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | grep -v "\.app/" | head -1)
+          echo "Using framework at: $SPARKLE_FW"
           if [ -z "$SPARKLE_FW" ]; then
-            echo "ERROR: Sparkle.framework not found in extracted archive"
+            echo "ERROR: Sparkle.framework not found (outside .app bundles)"
             exit 1
           fi
           mkdir -p Carthage/Build/Mac
-          cp -r "$SPARKLE_FW" Carthage/Build/Mac/
+          cp -rP "$SPARKLE_FW" Carthage/Build/Mac/
 
       - name: Build
         run: |

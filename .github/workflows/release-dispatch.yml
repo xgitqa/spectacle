@@ -30,10 +30,10 @@ jobs:
             "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
           mkdir -p /tmp/sparkle-extract
           tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
-          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | head -1)
-          test -n "$SPARKLE_FW" || (echo "Sparkle.framework not found" && exit 1)
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | grep -v "\.app/" | head -1)
+          test -n "$SPARKLE_FW" || (echo "Sparkle.framework not found outside .app bundles" && exit 1)
           mkdir -p Carthage/Build/Mac
-          cp -r "$SPARKLE_FW" Carthage/Build/Mac/
+          cp -rP "$SPARKLE_FW" Carthage/Build/Mac/
 
       - name: Cache test frameworks
         id: cache-test-fw
@@ -95,10 +95,10 @@ jobs:
             "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
           mkdir -p /tmp/sparkle-extract
           tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
-          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | head -1)
-          test -n "$SPARKLE_FW" || (echo "Sparkle.framework not found" && exit 1)
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | grep -v "\.app/" | head -1)
+          test -n "$SPARKLE_FW" || (echo "Sparkle.framework not found outside .app bundles" && exit 1)
           mkdir -p Carthage/Build/Mac
-          cp -r "$SPARKLE_FW" Carthage/Build/Mac/
+          cp -rP "$SPARKLE_FW" Carthage/Build/Mac/
 
       - name: Set version
         run: |
