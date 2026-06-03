@@ -1,1 +1,17 @@
-bmFtZTogUmVsZWFzZSBNYW51YWwKCm9uOgogIHdvcmtmbG93X2Rpc3BhdGNoOgogICAgaW5wdXRzOgogICAgICB2ZXJzaW9uOgogICAgICAgIGRlc2NyaXB0aW9uOiBSZWxlYXNlIHZlcnNpb24KICAgICAgICByZXF1aXJlZDogdHJ1ZQoKcGVybWlzc2lvbnM6CiAgY29udGVudHM6IHdyaXRlCgpqb2JzOgogIHBsYWNlaG9sZGVyOgogICAgcnVucy1vbjogbWFjb3MtMTQKICAgIHN0ZXBzOgogICAgICAtIHJ1bjogZWNobyAidmVyc2lvbj0ke3sgZ2l0aHViLmV2ZW50LmlucHV0cy52ZXJzaW9uIH19Igo=
+name: Release Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version (e.g. 1.3.0)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  placeholder:
+    runs-on: macos-14
+    steps:
+      - run: echo "version=${{ github.event.inputs.version }}"

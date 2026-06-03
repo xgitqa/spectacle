@@ -158,25 +158,8 @@ jobs:
           git config user.name "GitHub Actions"
           git tag -a "v${VERSION}" -m "Spectacle v${VERSION}"
           git push origin "v${VERSION}"
+          NOTES=$(printf '## Spectacle v%s - Apple Silicon Build\n\nNative arm64 support (no Rosetta required). Universal binary runs on both Apple Silicon and Intel Macs.\n\n### Install\n1. Download and unzip Spectacle-v%s.zip\n2. Move Spectacle.app to /Applications\n3. First launch only: right-click and choose Open\n\nThis build is ad-hoc signed (not notarized). macOS shows a security prompt on first launch.\n\n### System Requirements\n- macOS 10.13 High Sierra or later\n- Apple Silicon (M-series) or Intel Mac\n\n### Changes from the original Spectacle\n- Native arm64 binary - no Rosetta 2 required\n- Sparkle updated to 2.x (also arm64-native)\n- Minimum macOS raised from 10.9 to 10.13' "$VERSION" "$VERSION")
           gh release create "v${VERSION}" \
             "$RUNNER_TEMP/Spectacle-v${VERSION}.zip#Spectacle-v${VERSION}.zip" \
             --title "Spectacle v${VERSION}" \
-            --notes "## Spectacle v${VERSION} - Apple Silicon Build
-
-Native arm64 support (no Rosetta required). Universal binary runs on both Apple Silicon and Intel Macs.
-
-### Install
-1. Download and unzip Spectacle-v${VERSION}.zip
-2. Move Spectacle.app to /Applications
-3. First launch only: right-click and choose Open to bypass the Gatekeeper warning
-
-This build is ad-hoc signed (not notarized). macOS shows a security prompt on first launch - right-clicking and choosing Open bypasses it permanently.
-
-### System Requirements
-- macOS 10.13 High Sierra or later
-- Apple Silicon (M-series) or Intel Mac
-
-### Changes from the original Spectacle
-- Native arm64 binary - no Rosetta 2 required
-- Sparkle updated to 2.x (also arm64-native)
-- Minimum macOS raised from 10.9 to 10.13"
+            --notes "$NOTES"
