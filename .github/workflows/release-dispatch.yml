@@ -121,19 +121,6 @@ jobs:
             CLANG_TREAT_WARNINGS_AS_ERRORS=NO \
             build | xcpretty
 
-      - name: Embed Sparkle framework
-        run: |
-          APP="$RUNNER_TEMP/build/Release/Spectacle.app"
-          mkdir -p "$APP/Contents/Frameworks"
-          cp -r Carthage/Build/Mac/Sparkle.framework "$APP/Contents/Frameworks/"
-
-      - name: Ad-hoc codesign
-        run: |
-          APP="$RUNNER_TEMP/build/Release/Spectacle.app"
-          find "$APP/Contents/Frameworks" -name "*.framework" | while read fw; do
-            codesign --force --sign "-" "$fw"
-          done
-          codesign --force --deep --sign "-" "$APP"
 
       - name: Verify universal binary
         run: |
