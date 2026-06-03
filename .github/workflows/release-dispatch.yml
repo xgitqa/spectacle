@@ -76,7 +76,6 @@ jobs:
   release:
     name: Build and Release
     runs-on: macos-14
-    needs: test
     steps:
       - uses: actions/checkout@v4
 
