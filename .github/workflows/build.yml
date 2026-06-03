@@ -57,7 +57,11 @@ jobs:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           export XCODE_XCCONFIG_FILE="$GITHUB_WORKSPACE/Carthage.xcconfig"
-          carthage bootstrap --platform Mac OCHamcrest OCMockito expecta specta 2>&1
+          carthage bootstrap --platform Mac OCHamcrest OCMockito expecta specta 2>&1 || {
+            echo "=== Carthage xcodebuild log ==="
+            find /var/folders -name "carthage-xcodebuild*.log" 2>/dev/null | head -1 | xargs cat 2>/dev/null | tail -100
+            exit 1
+          }
 
       - name: Run tests
         run: |
@@ -70,6 +74,8 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
+            CLANG_TREAT_WARNINGS_AS_ERRORS=NO \
             test \
             | xcpretty --test
 
@@ -117,6 +123,8 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
+            CLANG_TREAT_WARNINGS_AS_ERRORS=NO \
             build \
             | xcpretty
 

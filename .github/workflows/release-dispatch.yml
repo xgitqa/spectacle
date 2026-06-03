@@ -1,1 +1,182 @@
-bmFtZTogUmVsZWFzZSAoTWFudWFsKQoKb246CiAgcHVzaDoKICAgIGJyYW5jaGVzOgogICAgICAtICdyZWxlYXNlLyoqJwogIHdvcmtmbG93X2Rpc3BhdGNoOgogICAgaW5wdXRzOgogICAgICB2ZXJzaW9uOgogICAgICAgIGRlc2NyaXB0aW9uOiAiUmVsZWFzZSB2ZXJzaW9uIChlLmcuIDEuMy4wKSIKICAgICAgICByZXF1aXJlZDogdHJ1ZQoKcGVybWlzc2lvbnM6CiAgY29udGVudHM6IHdyaXRlCgpqb2JzOgogIHRlc3Q6CiAgICBuYW1lOiBVbml0IFRlc3RzCiAgICBydW5zLW9uOiBtYWNvcy0xNAogICAgc3RlcHM6CiAgICAgIC0gdXNlczogYWN0aW9ucy9jaGVja291dEB2NAoKICAgICAgLSBuYW1lOiBDYWNoZSBTcGFya2xlIGZyYW1ld29yawogICAgICAgIGlkOiBjYWNoZS1zcGFya2xlCiAgICAgICAgdXNlczogYWN0aW9ucy9jYWNoZUB2NAogICAgICAgIHdpdGg6CiAgICAgICAgICBwYXRoOiBDYXJ0aGFnZS9CdWlsZC9NYWMvU3BhcmtsZS5mcmFtZXdvcmsKICAgICAgICAgIGtleTogc3BhcmtsZS0yLjYuNC1tYWMtZnJhbWV3b3JrCgogICAgICAtIG5hbWU6IERvd25sb2FkIFNwYXJrbGUgZnJhbWV3b3JrCiAgICAgICAgaWY6IHN0ZXBzLmNhY2hlLXNwYXJrbGUub3V0cHV0cy5jYWNoZS1oaXQgIT0gJ3RydWUnCiAgICAgICAgcnVuOiB8CiAgICAgICAgICBjdXJsIC1MIC1IICJBdXRob3JpemF0aW9uOiB0b2tlbiAke3sgc2VjcmV0cy5HSVRIVUJfVE9LRU4gfX0iIFwKICAgICAgICAgICAgLW8gL3RtcC9TcGFya2xlLnRhci54eiBcCiAgICAgICAgICAgICJodHRwczovL2dpdGh1Yi5jb20vc3BhcmtsZS1wcm9qZWN0L1NwYXJrbGUvcmVsZWFzZXMvZG93bmxvYWQvMi42LjQvU3BhcmtsZS0yLjYuNC50YXIueHoiCiAgICAgICAgICBta2RpciAtcCAvdG1wL3NwYXJrbGUtZXh0cmFjdAogICAgICAgICAgdGFyIC14ZiAvdG1wL1NwYXJrbGUudGFyLnh6IC1DIC90bXAvc3BhcmtsZS1leHRyYWN0CiAgICAgICAgICBTUEFSS0xFX0ZXPSQoZmluZCAvdG1wL3NwYXJrbGUtZXh0cmFjdCAtbmFtZSAiU3BhcmtsZS5mcmFtZXdvcmsiIHwgaGVhZCAtMSkKICAgICAgICAgIHRlc3QgLW4gIiRTUEFSS0xFX0ZXIiB8fCAoZWNobyAiU3BhcmtsZS5mcmFtZXdvcmsgbm90IGZvdW5kIiAmJiBleGl0IDEpCiAgICAgICAgICBta2RpciAtcCBDYXJ0aGFnZS9CdWlsZC9NYWMKICAgICAgICAgIGNwIC1yICIkU1BBUktMRV9GVyIgQ2FydGhhZ2UvQnVpbGQvTWFjLwoKICAgICAgLSBuYW1lOiBDYWNoZSB0ZXN0IGZyYW1ld29ya3MKICAgICAgICBpZDogY2FjaGUtdGVzdC1mdwogICAgICAgIHVzZXM6IGFjdGlvbnMvY2FjaGVAdjQKICAgICAgICB3aXRoOgogICAgICAgICAgcGF0aDogfAogICAgICAgICAgICBDYXJ0aGFnZS9CdWlsZC9NYWMvT0NIYW1jcmVzdC5mcmFtZXdvcmsKICAgICAgICAgICAgQ2FydGhhZ2UvQnVpbGQvTWFjL09DTW9ja2l0by5mcmFtZXdvcmsKICAgICAgICAgICAgQ2FydGhhZ2UvQnVpbGQvTWFjL0V4cGVjdGEuZnJhbWV3b3JrCiAgICAgICAgICAgIENhcnRoYWdlL0J1aWxkL01hYy9TcGVjdGEuZnJhbWV3b3JrCiAgICAgICAgICBrZXk6IHRlc3QtZnJhbWV3b3Jrcy0ke3sgaGFzaEZpbGVzKCdDYXJ0ZmlsZS5wcml2YXRlJywgJ0NhcnRmaWxlLnJlc29sdmVkJykgfX0KCiAgICAgIC0gbmFtZTogQm9vdHN0cmFwIHRlc3QgZnJhbWV3b3JrcwogICAgICAgIGlmOiBzdGVwcy5jYWNoZS10ZXN0LWZ3Lm91dHB1dHMuY2FjaGUtaGl0ICE9ICd0cnVlJwogICAgICAgIGVudjoKICAgICAgICAgIEdJVEhVQl9BQ0NFU1NfVE9LRU46ICR7eyBzZWNyZXRzLkdJVEhVQl9UT0tFTiB9fQogICAgICAgIHJ1bjogfAogICAgICAgICAgcHJpbnRmICdDTEFOR19UUkVBVF9XQVJOSU5HU19BU19FUlJPUlMgPSBOT1xuR0NDX1RSRUFUX1dBUk5JTkdTX0FTX0VSUk9SUyA9IE5PXG5TV0lGVF9UUkVBVF9XQVJOSU5HU19BU19FUlJPUlMgPSBOT1xuJyA+IC90bXAvY2FydGhhZ2UtY29tcGF0LnhjY29uZmlnCiAgICAgICAgICBleHBvcnQgWENPREVfWENDT05GSUdfRklMRT0vdG1wL2NhcnRoYWdlLWNvbXBhdC54Y2NvbmZpZwogICAgICAgICAgY2FydGhhZ2UgYm9vdHN0cmFwIC0tcGxhdGZvcm0gTWFjIE9DSGFtY3Jlc3QgT0NNb2NraXRvIGV4cGVjdGEgc3BlY3RhIDI+JjEKCiAgICAgIC0gbmFtZTogUnVuIHVuaXQgdGVzdHMKICAgICAgICBydW46IHwKICAgICAgICAgIHNldCAtbyBwaXBlZmFpbAogICAgICAgICAgeGNvZGVidWlsZCBcCiAgICAgICAgICAgIC1wcm9qZWN0IFNwZWN0YWNsZS54Y29kZXByb2ogXAogICAgICAgICAgICAtc2NoZW1lIFNwZWN0YWNsZSBcCiAgICAgICAgICAgIC1jb25maWd1cmF0aW9uIERlYnVnIFwKICAgICAgICAgICAgU1lNUk9PVD0iJFJVTk5FUl9URU1QL2J1aWxkIiBcCiAgICAgICAgICAgIENPREVfU0lHTl9JREVOVElUWT0iIiBcCiAgICAgICAgICAgIENPREVfU0lHTklOR19SRVFVSVJFRD1OTyBcCiAgICAgICAgICAgIENPREVfU0lHTklOR19BTExPV0VEPU5PIFwKICAgICAgICAgICAgdGVzdCB8IHhjcHJldHR5IC0tdGVzdAoKICByZWxlYXNlOgogICAgbmFtZTogQnVpbGQgYW5kIFJlbGVhc2UKICAgIHJ1bnMtb246IG1hY29zLTE0CiAgICBuZWVkczogdGVzdAogICAgc3RlcHM6CiAgICAgIC0gdXNlczogYWN0aW9ucy9jaGVja291dEB2NAoKICAgICAgLSBuYW1lOiBDYWNoZSBTcGFya2xlIGZyYW1ld29yawogICAgICAgIGlkOiBjYWNoZS1zcGFya2xlCiAgICAgICAgdXNlczogYWN0aW9ucy9jYWNoZUB2NAogICAgICAgIHdpdGg6CiAgICAgICAgICBwYXRoOiBDYXJ0aGFnZS9CdWlsZC9NYWMvU3BhcmtsZS5mcmFtZXdvcmsKICAgICAgICAgIGtleTogc3BhcmtsZS0yLjYuNC1tYWMtZnJhbWV3b3JrCgogICAgICAtIG5hbWU6IERvd25sb2FkIFNwYXJrbGUgZnJhbWV3b3JrCiAgICAgICAgaWY6IHN0ZXBzLmNhY2hlLXNwYXJrbGUub3V0cHV0cy5jYWNoZS1oaXQgIT0gJ3RydWUnCiAgICAgICAgcnVuOiB8CiAgICAgICAgICBjdXJsIC1MIC1IICJBdXRob3JpemF0aW9uOiB0b2tlbiAke3sgc2VjcmV0cy5HSVRIVUJfVE9LRU4gfX0iIFwKICAgICAgICAgICAgLW8gL3RtcC9TcGFya2xlLnRhci54eiBcCiAgICAgICAgICAgICJodHRwczovL2dpdGh1Yi5jb20vc3BhcmtsZS1wcm9qZWN0L1NwYXJrbGUvcmVsZWFzZXMvZG93bmxvYWQvMi42LjQvU3BhcmtsZS0yLjYuNC50YXIueHoiCiAgICAgICAgICBta2RpciAtcCAvdG1wL3NwYXJrbGUtZXh0cmFjdAogICAgICAgICAgdGFyIC14ZiAvdG1wL1NwYXJrbGUudGFyLnh6IC1DIC90bXAvc3BhcmtsZS1leHRyYWN0CiAgICAgICAgICBTUEFSS0xFX0ZXPSQoZmluZCAvdG1wL3NwYXJrbGUtZXh0cmFjdCAtbmFtZSAiU3BhcmtsZS5mcmFtZXdvcmsiIHwgaGVhZCAtMSkKICAgICAgICAgIHRlc3QgLW4gIiRTUEFSS0xFX0ZXIiB8fCAoZWNobyAiU3BhcmtsZS5mcmFtZXdvcmsgbm90IGZvdW5kIiAmJiBleGl0IDEpCiAgICAgICAgICBta2RpciAtcCBDYXJ0aGFnZS9CdWlsZC9NYWMKICAgICAgICAgIGNwIC1yICIkU1BBUktMRV9GVyIgQ2FydGhhZ2UvQnVpbGQvTWFjLwoKICAgICAgLSBuYW1lOiBTZXQgdmVyc2lvbgogICAgICAgIHJ1bjogfAogICAgICAgICAgVkVSU0lPTj0iJHtHSVRIVUJfUkVGX05BTUUjcmVsZWFzZS92fSIKICAgICAgICAgIC91c3IvbGliZXhlYy9QbGlzdEJ1ZGR5IC1jICJTZXQgOkNGQnVuZGxlU2hvcnRWZXJzaW9uU3RyaW5nICRWRVJTSU9OIiAiU3BlY3RhY2xlL1N1cHBvcnRpbmcgRmlsZXMvSW5mby5wbGlzdCIKICAgICAgICAgIC91c3IvbGliZXhlYy9QbGlzdEJ1ZGR5IC1jICJTZXQgOkNGQnVuZGxlVmVyc2lvbiAkVkVSU0lPTiIgIlNwZWN0YWNsZS9TdXBwb3J0aW5nIEZpbGVzL0luZm8ucGxpc3QiCiAgICAgICAgICBlY2hvICJCdWlsZGluZyB2ZXJzaW9uICRWRVJTSU9OIgoKICAgICAgLSBuYW1lOiBCdWlsZCBSZWxlYXNlCiAgICAgICAgcnVuOiB8CiAgICAgICAgICBzZXQgLW8gcGlwZWZhaWwKICAgICAgICAgIHhjb2RlYnVpbGQgXAogICAgICAgICAgICAtcHJvamVjdCBTcGVjdGFjbGUueGNvZGVwcm9qIFwKICAgICAgICAgICAgLXNjaGVtZSBTcGVjdGFjbGUgXAogICAgICAgICAgICAtY29uZmlndXJhdGlvbiBSZWxlYXNlIFwKICAgICAgICAgICAgU1lNUk9PVD0iJFJVTk5FUl9URU1QL2J1aWxkIiBcCiAgICAgICAgICAgIENPREVfU0lHTl9JREVOVElUWT0iLSIgXAogICAgICAgICAgICBDT0RFX1NJR05JTkdfUkVRVUlSRUQ9WUVTIFwKICAgICAgICAgICAgQ09ERV9TSUdOSU5HX0FMTE9XRUQ9WUVTIFwKICAgICAgICAgICAgYnVpbGQgfCB4Y3ByZXR0eQoKICAgICAgLSBuYW1lOiBFbWJlZCBTcGFya2xlIGZyYW1ld29yawogICAgICAgIHJ1bjogfAogICAgICAgICAgQVBQPSIkUlVOTkVSX1RFTVAvYnVpbGQvUmVsZWFzZS9TcGVjdGFjbGUuYXBwIgogICAgICAgICAgbWtkaXIgLXAgIiRBUFAvQ29udGVudHMvRnJhbWV3b3JrcyIKICAgICAgICAgIGNwIC1yIENhcnRoYWdlL0J1aWxkL01hYy9TcGFya2xlLmZyYW1ld29yayAiJEFQUC9Db250ZW50cy9GcmFtZXdvcmtzLyIKCiAgICAgIC0gbmFtZTogQWQtaG9jIGNvZGVzaWduCiAgICAgICAgcnVuOiB8CiAgICAgICAgICBBUFA9IiRSVU5ORVJfVEVNUC9idWlsZC9SZWxlYXNlL1NwZWN0YWNsZS5hcHAiCiAgICAgICAgICBmaW5kICIkQVBQL0NvbnRlbnRzL0ZyYW1ld29ya3MiIC1uYW1lICIqLmZyYW1ld29yayIgfCB3aGlsZSByZWFkIGZ3OyBkbwogICAgICAgICAgICBjb2Rlc2lnbiAtLWZvcmNlIC0tc2lnbiAiLSIgIiRmdyIKICAgICAgICAgIGRvbmUKICAgICAgICAgIGNvZGVzaWduIC0tZm9yY2UgLS1kZWVwIC0tc2lnbiAiLSIgIiRBUFAiCgogICAgICAtIG5hbWU6IFZlcmlmeSB1bml2ZXJzYWwgYmluYXJ5CiAgICAgICAgcnVuOiB8CiAgICAgICAgICBCSU5BUlk9IiRSVU5ORVJfVEVNUC9idWlsZC9SZWxlYXNlL1NwZWN0YWNsZS5hcHAvQ29udGVudHMvTWFjT1MvU3BlY3RhY2xlIgogICAgICAgICAgbGlwbyAtaW5mbyAiJEJJTkFSWSIKICAgICAgICAgIGxpcG8gLWluZm8gIiRCSU5BUlkiIHwgZ3JlcCAtcSBhcm02NCB8fCAoZWNobyAiYXJtNjQgc2xpY2UgTUlTU0lORyIgJiYgZXhpdCAxKQoKICAgICAgLSBuYW1lOiBQYWNrYWdlCiAgICAgICAgcnVuOiB8CiAgICAgICAgICBWRVJTSU9OPSIke0dJVEhVQl9SRUZfTkFNRSNyZWxlYXNlL3Z9IgogICAgICAgICAgY2QgIiRSVU5ORVJfVEVNUC9idWlsZC9SZWxlYXNlIgogICAgICAgICAgZGl0dG8gLWMgLWsgLS1rZWVwUGFyZW50IFNwZWN0YWNsZS5hcHAgIiRSVU5ORVJfVEVNUC9TcGVjdGFjbGUtdiR7VkVSU0lPTn0uemlwIgogICAgICAgICAgZWNobyAiUGFja2FnZTogJChkdSAtc2ggJFJVTk5FUl9URU1QL1NwZWN0YWNsZS12JHtWRVJTSU9OfS56aXAgfCBjdXQgLWYxKSIKCiAgICAgIC0gbmFtZTogQ3JlYXRlIHRhZyBhbmQgR2l0SHViIFJlbGVhc2UKICAgICAgICBlbnY6CiAgICAgICAgICBHSF9UT0tFTjogJHt7IHNlY3JldHMuR0lUSFVCX1RPS0VOIH19CiAgICAgICAgcnVuOiB8CiAgICAgICAgICBWRVJTSU9OPSIke0dJVEhVQl9SRUZfTkFNRSNyZWxlYXNlL3Z9IgogICAgICAgICAgZ2l0IGNvbmZpZyB1c2VyLmVtYWlsICJjaUBnaXRodWIuY29tIgogICAgICAgICAgZ2l0IGNvbmZpZyB1c2VyLm5hbWUgIkdpdEh1YiBBY3Rpb25zIgogICAgICAgICAgZ2l0IHRhZyAtYSAidiR7VkVSU0lPTn0iIC1tICJTcGVjdGFjbGUgdiR7VkVSU0lPTn0iCiAgICAgICAgICBnaXQgcHVzaCBvcmlnaW4gInYke1ZFUlNJT059IgogICAgICAgICAgZ2ggcmVsZWFzZSBjcmVhdGUgInYke1ZFUlNJT059IiBcCiAgICAgICAgICAgICIkUlVOTkVSX1RFTVAvU3BlY3RhY2xlLXYke1ZFUlNJT059LnppcCNTcGVjdGFjbGUtdiR7VkVSU0lPTn0uemlwIiBcCiAgICAgICAgICAgIC0tdGl0bGUgIlNwZWN0YWNsZSB2JHtWRVJTSU9OfSIgXAogICAgICAgICAgICAtLW5vdGVzICIjIyBTcGVjdGFjbGUgdiR7VkVSU0lPTn0gLSBBcHBsZSBTaWxpY29uIEJ1aWxkCgpOYXRpdmUgYXJtNjQgc3VwcG9ydCAobm8gUm9zZXR0YSByZXF1aXJlZCkuIFVuaXZlcnNhbCBiaW5hcnkgcnVucyBvbiBib3RoIEFwcGxlIFNpbGljb24gYW5kIEludGVsIE1hY3MuCgojIyMgSW5zdGFsbAoxLiBEb3dubG9hZCBhbmQgdW56aXAgU3BlY3RhY2xlLXYke1ZFUlNJT059LnppcAoyLiBNb3ZlIFNwZWN0YWNsZS5hcHAgdG8gL0FwcGxpY2F0aW9ucwozLiBGaXJzdCBsYXVuY2ggb25seTogcmlnaHQtY2xpY2sgYW5kIGNob29zZSBPcGVuIHRvIGJ5cGFzcyB0aGUgR2F0ZWtlZXBlciB3YXJuaW5nCgpUaGlzIGJ1aWxkIGlzIGFkLWhvYyBzaWduZWQgKG5vdCBub3Rhcml6ZWQpLiBtYWNPUyBzaG93cyBhIHNlY3VyaXR5IHByb21wdCBvbiB0aGUgZmlyc3QgbGF1bmNoIC0gcmlnaHQtY2xpY2tpbmcgYW5kIGNob29zaW5nIE9wZW4gYnlwYXNzZXMgaXQgcGVybWFuZW50bHkuCgojIyMgU3lzdGVtIFJlcXVpcmVtZW50cwotIG1hY09TIDEwLjEzIEhpZ2ggU2llcnJhIG9yIGxhdGVyCi0gQXBwbGUgU2lsaWNvbiAoTS1zZXJpZXMpIG9yIEludGVsIE1hYwoKIyMjIENoYW5nZXMgZnJvbSB0aGUgb3JpZ2luYWwgU3BlY3RhY2xlCi0gTmF0aXZlIGFybTY0IGJpbmFyeSAtIG5vIFJvc2V0dGEgMiByZXF1aXJlZAotIFNwYXJrbGUgdXBkYXRlZCB0byAyLnggKGFsc28gYXJtNjQtbmF0aXZlKQotIE1pbmltdW0gbWFjT1MgcmFpc2VkIGZyb20gMTAuOSB0byAxMC4xMyIK
+name: Release (Manual)
+
+on:
+  push:
+    branches:
+      - 'release/**'
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Sparkle framework
+        id: cache-sparkle
+        uses: actions/cache@v4
+        with:
+          path: Carthage/Build/Mac/Sparkle.framework
+          key: sparkle-2.6.4-mac-framework
+
+      - name: Download Sparkle framework
+        if: steps.cache-sparkle.outputs.cache-hit != 'true'
+        run: |
+          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -o /tmp/Sparkle.tar.xz \
+            "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
+          mkdir -p /tmp/sparkle-extract
+          tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | head -1)
+          test -n "$SPARKLE_FW" || (echo "Sparkle.framework not found" && exit 1)
+          mkdir -p Carthage/Build/Mac
+          cp -r "$SPARKLE_FW" Carthage/Build/Mac/
+
+      - name: Cache test frameworks
+        id: cache-test-fw
+        uses: actions/cache@v4
+        with:
+          path: |
+            Carthage/Build/Mac/OCHamcrest.framework
+            Carthage/Build/Mac/OCMockito.framework
+            Carthage/Build/Mac/Expecta.framework
+            Carthage/Build/Mac/Specta.framework
+          key: test-frameworks-${{ hashFiles('Cartfile.private', 'Cartfile.resolved', 'Carthage.xcconfig') }}
+
+      - name: Bootstrap test frameworks
+        if: steps.cache-test-fw.outputs.cache-hit != 'true'
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          export XCODE_XCCONFIG_FILE="$GITHUB_WORKSPACE/Carthage.xcconfig"
+          carthage bootstrap --platform Mac OCHamcrest OCMockito expecta specta 2>&1 || {
+            echo "=== Carthage xcodebuild log ==="
+            find /var/folders -name "carthage-xcodebuild*.log" 2>/dev/null | head -1 | xargs cat 2>/dev/null | tail -100
+            exit 1
+          }
+
+      - name: Run unit tests
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Spectacle.xcodeproj \
+            -scheme Spectacle \
+            -configuration Debug \
+            SYMROOT="$RUNNER_TEMP/build" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
+            CLANG_TREAT_WARNINGS_AS_ERRORS=NO \
+            test | xcpretty --test
+
+  release:
+    name: Build and Release
+    runs-on: macos-14
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Sparkle framework
+        id: cache-sparkle
+        uses: actions/cache@v4
+        with:
+          path: Carthage/Build/Mac/Sparkle.framework
+          key: sparkle-2.6.4-mac-framework
+
+      - name: Download Sparkle framework
+        if: steps.cache-sparkle.outputs.cache-hit != 'true'
+        run: |
+          curl -L -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -o /tmp/Sparkle.tar.xz \
+            "https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz"
+          mkdir -p /tmp/sparkle-extract
+          tar -xf /tmp/Sparkle.tar.xz -C /tmp/sparkle-extract
+          SPARKLE_FW=$(find /tmp/sparkle-extract -name "Sparkle.framework" | head -1)
+          test -n "$SPARKLE_FW" || (echo "Sparkle.framework not found" && exit 1)
+          mkdir -p Carthage/Build/Mac
+          cp -r "$SPARKLE_FW" Carthage/Build/Mac/
+
+      - name: Set version
+        run: |
+          VERSION="${GITHUB_REF_NAME#release/v}"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "Spectacle/Supporting Files/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "Spectacle/Supporting Files/Info.plist"
+          echo "Building version $VERSION"
+
+      - name: Build Release
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project Spectacle.xcodeproj \
+            -scheme Spectacle \
+            -configuration Release \
+            SYMROOT="$RUNNER_TEMP/build" \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=YES \
+            CODE_SIGNING_ALLOWED=YES \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
+            CLANG_TREAT_WARNINGS_AS_ERRORS=NO \
+            build | xcpretty
+
+      - name: Embed Sparkle framework
+        run: |
+          APP="$RUNNER_TEMP/build/Release/Spectacle.app"
+          mkdir -p "$APP/Contents/Frameworks"
+          cp -r Carthage/Build/Mac/Sparkle.framework "$APP/Contents/Frameworks/"
+
+      - name: Ad-hoc codesign
+        run: |
+          APP="$RUNNER_TEMP/build/Release/Spectacle.app"
+          find "$APP/Contents/Frameworks" -name "*.framework" | while read fw; do
+            codesign --force --sign "-" "$fw"
+          done
+          codesign --force --deep --sign "-" "$APP"
+
+      - name: Verify universal binary
+        run: |
+          BINARY="$RUNNER_TEMP/build/Release/Spectacle.app/Contents/MacOS/Spectacle"
+          lipo -info "$BINARY"
+          lipo -info "$BINARY" | grep -q arm64 || (echo "arm64 slice MISSING" && exit 1)
+
+      - name: Package
+        run: |
+          VERSION="${GITHUB_REF_NAME#release/v}"
+          cd "$RUNNER_TEMP/build/Release"
+          ditto -c -k --keepParent Spectacle.app "$RUNNER_TEMP/Spectacle-v${VERSION}.zip"
+          echo "Package: $(du -sh $RUNNER_TEMP/Spectacle-v${VERSION}.zip | cut -f1)"
+
+      - name: Create tag and GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#release/v}"
+          git config user.email "ci@github.com"
+          git config user.name "GitHub Actions"
+          git tag -a "v${VERSION}" -m "Spectacle v${VERSION}"
+          git push origin "v${VERSION}"
+          gh release create "v${VERSION}" \
+            "$RUNNER_TEMP/Spectacle-v${VERSION}.zip#Spectacle-v${VERSION}.zip" \
+            --title "Spectacle v${VERSION}" \
+            --notes "## Spectacle v${VERSION} - Apple Silicon Build
+
+Native arm64 support (no Rosetta required). Universal binary runs on both Apple Silicon and Intel Macs.
+
+### Install
+1. Download and unzip Spectacle-v${VERSION}.zip
+2. Move Spectacle.app to /Applications
+3. First launch only: right-click and choose Open to bypass the Gatekeeper warning
+
+This build is ad-hoc signed (not notarized). macOS shows a security prompt on first launch - right-clicking and choosing Open bypasses it permanently.
+
+### System Requirements
+- macOS 10.13 High Sierra or later
+- Apple Silicon (M-series) or Intel Mac
+
+### Changes from the original Spectacle
+- Native arm64 binary - no Rosetta 2 required
+- Sparkle updated to 2.x (also arm64-native)
+- Minimum macOS raised from 10.9 to 10.13"

@@ -22,7 +22,7 @@
 + (void)displayRunningInBackgroundAlertWithCallback:(void (^)(BOOL, BOOL))callback
 {
   NSAlert *alert = [NSAlert new];
-  alert.alertStyle = NSInformationalAlertStyle;
+  alert.alertStyle = NSAlertStyleInformational;
   alert.showsSuppressionButton = YES;
   alert.messageText = NSLocalizedString(@"AlertMessageTextRunningInBackground", @"The message text of the alert displayed when prompting to run Spectacle in the background");
   alert.informativeText = NSLocalizedString(@"AlertInformativeTextRunningInBackground", @"The informative text of the alert displayed when prompting to run Spectacle in the background");
