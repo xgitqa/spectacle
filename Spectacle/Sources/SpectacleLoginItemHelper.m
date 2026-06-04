@@ -1,78 +1,38 @@
 #import "SpectacleLoginItemHelper.h"
 
+#import <ServiceManagement/ServiceManagement.h>
+
 @implementation SpectacleLoginItemHelper
 
 + (BOOL)isLoginItemEnabledForBundle:(NSBundle *)bundle
 {
-  LSSharedFileListRef sharedFileList = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
-  NSString *applicationPath = bundle.bundlePath;
-  BOOL result = NO;
-  if (sharedFileList) {
-    UInt32 seedValue;
-    NSArray *sharedFileListArray = CFBridgingRelease(LSSharedFileListCopySnapshot(sharedFileList, &seedValue));
-    for (id sharedFile in sharedFileListArray) {
-      LSSharedFileListItemRef sharedFileListItem = (__bridge LSSharedFileListItemRef)sharedFile;
-      CFURLRef applicationPathURL = NULL;
-      LSSharedFileListItemResolve(sharedFileListItem, 0, (CFURLRef *)&applicationPathURL, NULL);
-      if (applicationPathURL != NULL) {
-        NSString *resolvedApplicationPath = [(__bridge NSURL *)applicationPathURL path];
-        CFRelease(applicationPathURL);
-        if ([resolvedApplicationPath compare:applicationPath] == NSOrderedSame) {
-          result = YES;
-          break;
-        }
-      }
-    }
-    CFRelease(sharedFileList);
-  } else {
-    NSLog(@"Unable to create the shared file list.");
+  if (@available(macOS 13.0, *)) {
+    return [[SMAppService mainAppService] status] == SMAppServiceStatusEnabled;
   }
-  return result;
+  // On macOS 10.13-12 the login item state cannot be queried without deprecated
+  // LSSharedFileList APIs that are no longer in the SDK; return NO as a safe default.
+  return NO;
 }
 
 + (void)enableLoginItemForBundle:(NSBundle *)bundle
 {
-  LSSharedFileListRef sharedFileList = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
-  NSString *applicationPath = bundle.bundlePath;
-  NSURL *applicationPathURL = [NSURL fileURLWithPath:applicationPath];
-  if (sharedFileList) {
-    LSSharedFileListItemRef sharedFileListItem = LSSharedFileListInsertItemURL(sharedFileList,
-                                                                               kLSSharedFileListItemLast,
-                                                                               NULL,
-                                                                               NULL,
-                                                                               (__bridge CFURLRef)applicationPathURL,
-                                                                               NULL,
-                                                                               NULL);
-    if (sharedFileListItem) {
-      CFRelease(sharedFileListItem);
+  if (@available(macOS 13.0, *)) {
+    NSError *error = nil;
+    if (![[SMAppService mainAppService] registerAndReturnError:&error]) {
+      NSLog(@"Failed to enable login item: %@", error);
     }
-    CFRelease(sharedFileList);
   } else {
-    NSLog(@"Unable to create the shared file list.");
+    NSLog(@"Launch at login requires macOS 13 or later.");
   }
 }
 
 + (void)disableLoginItemForBundle:(NSBundle *)bundle
 {
-  LSSharedFileListRef sharedFileList = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
-  NSString *applicationPath = bundle.bundlePath;
-  if (sharedFileList) {
-    UInt32 seedValue;
-    NSArray *sharedFileListArray = CFBridgingRelease(LSSharedFileListCopySnapshot(sharedFileList, &seedValue));
-    for (id sharedFile in sharedFileListArray) {
-      LSSharedFileListItemRef sharedFileListItem = (__bridge LSSharedFileListItemRef)sharedFile;
-      CFURLRef applicationPathURL;
-      if (LSSharedFileListItemResolve(sharedFileListItem, 0, &applicationPathURL, NULL) == noErr) {
-        NSString *resolvedApplicationPath = [(__bridge NSURL *)applicationPathURL path];
-        if ([resolvedApplicationPath compare:applicationPath] == NSOrderedSame) {
-          LSSharedFileListItemRemove(sharedFileList, sharedFileListItem);
-        }
-        CFRelease(applicationPathURL);
-      }
+  if (@available(macOS 13.0, *)) {
+    NSError *error = nil;
+    if (![[SMAppService mainAppService] unregisterAndReturnError:&error]) {
+      NSLog(@"Failed to disable login item: %@", error);
     }
-    CFRelease(sharedFileList);
-  } else {
-    NSLog(@"Unable to create the shared file list.");
   }
 }
 

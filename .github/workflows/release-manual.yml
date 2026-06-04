@@ -1,0 +1,17 @@
+name: Release Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version (e.g. 1.3.0)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  placeholder:
+    runs-on: macos-14
+    steps:
+      - run: echo "version=${{ github.event.inputs.version }}"
